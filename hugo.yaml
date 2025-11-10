@@ -50,7 +50,7 @@ params:
     safari_pinned_tab: "<link / abs url>"
 
   label:
-    text: "Home"
+    text: "Saihan"
     icon: /apple-touch-icon.png
     iconHeight: 35
 
@@ -113,26 +113,34 @@ params:
     keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
-    - identifier: posts
-      name: posts
-      url: /posts/
+    - identifier: home
+      name: Home
+      url: /
       weight: 10
-    - identifier: categories
-      name: categories
-      url: /categories/
-      weight: 20
-    - identifier: tags
-      name: tags
-      url: /tags/
+    - identifier: about
+      name: About
+      url: /about/
       weight: 30
-    - identifier: notes
-      name: notes
-      url: /notes/
+    - identifier: posts
+      name: Blog
+      url: /posts/
       weight: 40
+    # - identifier: tags
+    #   name: Tags
+    #   url: /tags/
+    #   weight: 50
+    - identifier: notes
+      name: Notes
+      url: /notes/
+      weight: 60
     - identifier: projects
-      name: projects
+      name: Projects
       url: /projects/
-      weight: 50
+      weight: 70
+    - identifier: archive
+      name: Archive
+      url: /archives/
+      weight: 80
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
