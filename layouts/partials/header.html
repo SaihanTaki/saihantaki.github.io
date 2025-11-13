@@ -39,8 +39,16 @@
 </script>
 {{- end }}
 
-<header class="header">
+<header class="header"
+
+  {{ if .IsHome }}
+    style="position:fixed; top:0px; width:100%; z-index:1000; background-color: var(--code-bg);"
+  {{ else if not .IsHome}}
+    style="position:fixed; top:0px; width:100%; z-index:1000; background-color: var(--theme);"
+  {{ end }}
+  >
     <nav class="nav">
+    
         <div class="logo">
             {{- $label_text := (site.Params.label.text | default site.Title) }}
             {{- if site.Title }}
@@ -160,3 +168,12 @@
         </ul>
     </nav>
 </header>
+
+<!--Added content for sticky header.-->
+<div id="header-offset"></div>
+<script>
+    let header = document.getElementsByClassName("header")[0];
+    let headerOffset = document.getElementById("header-offset");
+    headerOffset.style.height = header.firstChild.offsetHeight + "px";
+</script>
+<!--End of added content for sticky header.-->
