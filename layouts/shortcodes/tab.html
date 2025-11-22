@@ -1,0 +1,12 @@
+{{- $name := .Get "name" -}}
+{{- $parent := .Parent -}}
+{{- if $parent -}}
+{{- $parent.Scratch.Add "tabs" (slice (dict "name" $name)) -}}
+{{- end -}}
+
+{{- .Parent.Scratch.Add "tabIndex" 1 -}}
+{{- $index := .Parent.Scratch.Get "tabIndex" -}}
+
+<div class="tab-content {{ if eq $index 1 }}active{{ end }}" data-tab="{{ $name | urlize }}">
+    {{ .Inner | markdownify }}
+</div>

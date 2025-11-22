@@ -1,0 +1,43 @@
+<div class="tabs">
+    {{- .Scratch.Set "tabIndex" -1 -}}
+    {{- $inner := .Inner -}}
+    <div class="tabs-header">
+        {{- range $index, $element := .Scratch.Get "tabs" -}}
+        <button class="tab-button {{ if eq $index 0 }}active{{ end }}" data-tab="{{ .name | urlize }}">
+            {{ .name }}
+        </button>
+        {{- end -}}
+    </div>
+    <div class="tabs-content">
+        {{- $inner -}}
+    </div>
+</div>
+
+<script>
+    // This script is inline to ensure it runs after the HTML is parsed
+    (function () {
+        const tabs = document.querySelectorAll('.tabs');
+        tabs.forEach(tabContainer => {
+            const buttons = tabContainer.querySelectorAll('.tab-button');
+            const contents = tabContainer.querySelectorAll('.tab-content');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    buttons.forEach(b => b.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked button
+                    button.classList.add('active');
+
+                    // Show corresponding content
+                    const tabId = button.getAttribute('data-tab');
+                    const content = tabContainer.querySelector(`.tab-content[data-tab="${tabId}"]`);
+                    if (content) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+    })();
+</script>
