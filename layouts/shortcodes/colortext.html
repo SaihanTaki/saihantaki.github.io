@@ -1,0 +1,41 @@
+{{ $text := .Get 0 }}
+{{ $bg := .Get 1 }}
+
+<span class="bgtext-shortcode" 
+      data-bg="{{ $bg }}" 
+      style="padding: 2px; border-radius: 2px;">
+  {{ $text }}
+</span>
+
+<script>
+(function() {
+    const el = document.currentScript.previousElementSibling;
+    const bg = el.getAttribute("data-bg");
+
+    // Create a temporary element to let the browser parse the color
+    const temp = document.createElement("div");
+    temp.style.color = bg;
+    document.body.appendChild(temp);
+
+    const rgb = getComputedStyle(temp).color;
+    document.body.removeChild(temp);
+
+    // Extract RGB values
+    const m = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (!m) return;
+
+    const r = parseInt(m[1]);
+    const g = parseInt(m[2]);
+    const b = parseInt(m[3]);
+
+    // Relative luminance formula (WCAG)
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+    // Choose black or white text
+    const textColor = luminance > 140 ? "black" : "white";
+
+    // Apply colors
+    el.style.backgroundColor = bg;
+    el.style.color = textColor;
+})();
+</script>

@@ -11,6 +11,7 @@ draft: false
 weight: 1
 math: true
 ShowBreadCrumbs: true
+plotly: true 
 
 cover:
   image: images/papermod-cover.png
@@ -93,5 +94,27 @@ fmt.Println("Hello, World!")
 {{< /tab >}}
 
 {{< /tabs >}}
+
+### marimo wasm iframe
+{{< rawhtml >}}
+<iframe
+	src="/marimo-wasm-blog/index.html?embed=true&show-chrome=false"
+	width="100%"
+	height="500"
+	frameborder="0"
+></iframe>
+
+{{< /rawhtml >}}
+
+### Plotly plot using json
+
+
+{{< plotly json="/test_plotly_3d.json" height="200px" >}}
+
+### Check color text 
+
+This is a colour shortcode {{< colortext "Hello My name is Saihan" "#97E5D7" >}}.
+This is a colour shortcode {{< colortext "Hello My name is Saihan" "aquamarine" >}}.
+
 
 
