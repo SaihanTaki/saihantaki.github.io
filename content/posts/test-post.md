@@ -106,10 +106,6 @@ fmt.Println("Hello, World!")
 
 {{< /rawhtml >}}
 
-### Plotly plot using json
-
-
-{{< plotly json="/test_plotly_3d.json" height="200px" >}}
 
 ### Check color text 
 
