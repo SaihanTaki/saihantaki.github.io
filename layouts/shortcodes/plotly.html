@@ -1,0 +1,25 @@
+{{ $json := .Get "json" }}
+{{ $height := .Get "height" | default "500px" }}
+{{ $id := delimit (slice "plotly" (md5 $json) (now.UnixNano)) "-" }}
+
+<div id="{{ $id }}" style="height: {{ $height }}; width: 100%"></div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function renderPlotly() {
+            if (typeof Plotly === 'undefined') {
+                console.warn("Plotly not loaded yet, retrying...");
+                setTimeout(renderPlotly, 100);
+                return;
+            }
+            fetch("{{ $json | relURL }}")
+                .then(response => response.json())
+                .then(data => {
+                    Plotly.newPlot('{{ $id }}', data.data, data.layout);
+                })
+                .catch(error => console.error('Error loading Plotly JSON:', error));
+        }
+        renderPlotly();
+    });
+</script>
