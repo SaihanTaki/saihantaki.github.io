@@ -112,5 +112,8 @@ fmt.Println("Hello, World!")
 This is a colour shortcode {{< colortext "Hello My name is Saihan" "#97E5D7" >}}.
 This is a colour shortcode {{< colortext "Hello My name is Saihan" "aquamarine" >}}.
 
+## Plotly shortcode
+{{< plotly json="/test_plotly_3d.json" height="400px" >}}
+
 
 

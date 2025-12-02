@@ -1,0 +1,56 @@
+{
+    "data": [
+        {
+            "type": "scatter3d",
+            "mode": "markers",
+            "x": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "y": [
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "z": [
+                10,
+                15,
+                13,
+                17,
+                12
+            ],
+            "marker": {
+                "size": 6,
+                "opacity": 0.8,
+                "color": [
+                    10,
+                    15,
+                    13,
+                    17,
+                    12
+                ],
+                "colorscale": "Viridis"
+            },
+            "name": "Sample Points"
+        }
+    ],
+    "layout": {
+        "title": "3D Scatter Plot Example",
+        "scene": {
+            "xaxis": {
+                "title": "X Axis"
+            },
+            "yaxis": {
+                "title": "Y Axis"
+            },
+            "zaxis": {
+                "title": "Z Axis"
+            }
+        }
+    }
+}
