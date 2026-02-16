@@ -1,0 +1,166 @@
+/* Resume Section Styles */
+
+.resume-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    color: var(--primary);
+}
+
+.resume-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.resume-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.resume-download {
+    margin-bottom: 15px;
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: var(--theme);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: opacity 0.2s ease;
+}
+
+.download-btn:hover {
+    opacity: 0.9;
+}
+
+.resume-contact {
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.resume-contact a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.resume-contact a:hover {
+    text-decoration: underline;
+}
+
+.resume-section {
+    margin-bottom: 40px;
+}
+
+.resume-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--border);
+    color: var(--primary);
+}
+
+.resume-summary {
+    line-height: 1.6;
+    color: var(--secondary);
+}
+
+.resume-item {
+    margin-bottom: 25px;
+}
+
+.resume-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+}
+
+.resume-item-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.resume-item-date {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    font-style: italic;
+}
+
+.resume-item-subheader {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+
+.resume-item-company {
+    font-weight: 600;
+}
+
+.resume-item-description {
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.resume-item-description ul {
+    margin-top: 5px;
+    padding-left: 20px;
+}
+
+.resume-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.resume-skill-category {
+    background: var(--entry);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.resume-skill-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.resume-skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.resume-skill-tag {
+    background: var(--tertiary);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .resume-item-header {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .resume-item-subheader {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .resume-header h1 {
+        font-size: 2rem;
+    }
+}

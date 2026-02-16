@@ -1,0 +1,53 @@
+summary: |
+  Artificial Intelligence Engineer based in Dhaka, Bangladesh. Most of my work revolves around machine learning, large language models, and AI-driven applications — exploring how these technologies can solve real-world problems. I enjoy designing end-to-end solutions — from training models and crafting APIs to automating deployments and optimizing infrastructure.
+
+experience:
+  - title: "Artificial Intelligence Engineer"
+    company: "Example AI Lab"
+    dates: "2024 - Present"
+    location: "Dhaka, Bangladesh"
+    description: |
+      - Developing and deploying Large Language Models (LLMs) for specialized tasks.
+      - Building end-to-end AI pipelines and APIs.
+      - Optimizing infrastructure for efficient model inference.
+  - title: "Junior Machine Learning Engineer"
+    company: "Tech Solutions Inc."
+    dates: "2022 - 2024"
+    location: "Remote"
+    description: |
+      - Implemented computer vision models for automated quality control.
+      - Worked on data preprocessing and feature engineering for fraud detection models.
+
+education:
+  - degree: "Bachelor of Science in Computer Science"
+    school: "Example University"
+    dates: "2018 - 2022"
+    location: "Dhaka, Bangladesh"
+
+skills:
+  - category: "Languages"
+    list: ["Python", "JavaScript", "C++", "SQL"]
+  - category: "AI & ML"
+    list: ["PyTorch", "TensorFlow", "Transformers", "Scikit-learn", "LangChain"]
+  - category: "Tools & Infrastructure"
+    list: ["Docker", "Kubernetes", "AWS", "Git", "FastAPI", "Hugo"]
+  - category: "Web"
+    list: ["React", "HTML5", "CSS3", "Next.js", "Tailwind CSS"]
+  - category: "Data Science"
+    list: ["PyTorch", "TensorFlow", "Transformers", "Scikit-learn", "LangChain"]
+  - category: "Frameworks"
+    list: ["Docker", "Kubernetes", "AWS", "Git", "FastAPI", "Hugo"]
+
+certifications:
+  - name: "Generative AI with Large Language Models"
+    issuer: "DeepLearning.AI / Coursera"
+    date: "2024"
+  - name: "AWS Certified Solutions Architect – Associate"
+    issuer: "Amazon Web Services"
+    date: "2023"
+
+contact:
+  email: "saihan@example.com"
+  linkedin: "https://linkedin.com/in/saihan"
+  github: "https://github.com/saihantaki"
+  resume_download_url: "/abdullah_saihan_resume.pdf"

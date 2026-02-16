@@ -1,0 +1,94 @@
+{{ define "main" }}
+<div class="resume-container">
+    <header class="resume-header">
+        <h1>{{ .Title }}</h1>
+        {{ with .Site.Data.resume.contact.resume_download_url }}
+        <div class="resume-download">
+            <a href="{{ . }}" class="download-btn" download>Download PDF Resume</a>
+        </div>
+        {{ end }}
+        <div class="resume-contact">
+            {{ with .Site.Data.resume.contact }}
+            {{ if .email }}<a href="mailto:{{ .email }}">{{ .email }}</a>{{ end }}
+            {{ if .linkedin }} | <a href="{{ .linkedin }}" target="_blank">LinkedIn</a>{{ end }}
+            {{ if .github }} | <a href="{{ .github }}" target="_blank">GitHub</a>{{ end }}
+            {{ end }}
+        </div>
+    </header>
+
+    <section class="resume-section">
+        <h2 class="resume-section-title">Professional Summary</h2>
+        <div class="resume-summary">
+            {{ .Site.Data.resume.summary | markdownify }}
+        </div>
+    </section>
+
+    <section class="resume-section">
+        <h2 class="resume-section-title">Experience</h2>
+        {{ range .Site.Data.resume.experience }}
+        <div class="resume-item">
+            <div class="resume-item-header">
+                <h3 class="resume-item-title">{{ .title }}</h3>
+                <span class="resume-item-date">{{ .dates }}</span>
+            </div>
+            <div class="resume-item-subheader">
+                <span class="resume-item-company">{{ .company }}</span>
+                <span class="resume-item-location">{{ .location }}</span>
+            </div>
+            <div class="resume-item-description">
+                {{ .description | markdownify }}
+            </div>
+        </div>
+        {{ end }}
+    </section>
+
+    <section class="resume-section">
+        <h2 class="resume-section-title">Education</h2>
+        {{ range .Site.Data.resume.education }}
+        <div class="resume-item">
+            <div class="resume-item-header">
+                <h3 class="resume-item-title">{{ .degree }}</h3>
+                <span class="resume-item-date">{{ .dates }}</span>
+            </div>
+            <div class="resume-item-subheader">
+                <span class="resume-item-company">{{ .school }}</span>
+                <span class="resume-item-location">{{ .location }}</span>
+            </div>
+        </div>
+        {{ end }}
+    </section>
+
+    {{ if .Site.Data.resume.certifications }}
+    <section class="resume-section">
+        <h2 class="resume-section-title">Certifications</h2>
+        {{ range .Site.Data.resume.certifications }}
+        <div class="resume-item">
+            <div class="resume-item-header">
+                <h3 class="resume-item-title">{{ .name }}</h3>
+                <span class="resume-item-date">{{ .date }}</span>
+            </div>
+            <div class="resume-item-subheader">
+                <span class="resume-item-company">{{ .issuer }}</span>
+            </div>
+        </div>
+        {{ end }}
+    </section>
+    {{ end }}
+
+    <section class="resume-section">
+        <h2 class="resume-section-title">Skills</h2>
+        <div class="resume-skills-grid">
+            {{ range .Site.Data.resume.skills }}
+            <div class="resume-skill-category">
+                <h3 class="resume-skill-title">{{ .category }}</h3>
+                <div class="resume-skill-list">
+                    {{ range .list }}
+                    <span class="resume-skill-tag">{{ . }}</span>
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </section>
+</div>
+{{ end }}
