@@ -112,8 +112,42 @@ fmt.Println("Hello, World!")
 This is a colour shortcode {{< colortext "Hello My name is Saihan" "#97E5D7" >}}.
 This is a colour shortcode {{< colortext "Hello My name is Saihan" "aquamarine" >}}.
 
-## Plotly shortcode
+## Plotly 3d plot
 {{< plotly json="/test_plotly_3d.json" height="400px" >}}
+
+## plotly widget
+{{< plotly json="/test_plotly_widget.json" height="800px" >}}
+
+## Mermaid
+
+```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>John: Hello John, how are you?
+    loop Healthcheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts <br/>prevail!
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+```
+
+## GoAT Diagrams
+
+```goat
+      .               .                .               .--- 1          .-- 1     / 1
+     / \              |                |           .---+            .-+         +
+    /   \         .---+---.         .--+--.        |   '--- 2      |   '-- 2   / \ 2
+   +     +        |       |        |       |    ---+            ---+          +
+  / \   / \     .-+-.   .-+-.     .+.     .+.      |   .--- 3      |   .-- 3   \ / 3
+ /   \ /   \    |   |   |   |    |   |   |   |     '---+            '-+         +
+ 1   2 3   4    1   2   3   4    1   2   3   4         '--- 4          '-- 4     \ 4
+
+```
+
+
 
 
 
