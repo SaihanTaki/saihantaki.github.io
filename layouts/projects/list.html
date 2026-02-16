@@ -1,0 +1,61 @@
+{{ define "main" }}
+<header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">
+        {{ .Description }}
+    </div>
+    {{- end }}
+</header>
+
+<div class="post-content">
+    {{ .Content }}
+
+    <div class="projects-container">
+        {{ $projects := .Site.Data.projects }}
+        {{ $categories := slice }}
+        {{ range $projects }}
+        {{ $categories = $categories | append .category }}
+        {{ end }}
+        {{ $categories = $categories | uniq }}
+
+        {{ range $categories }}
+        <div class="project-section">
+            <h2 class="section-title">{{ . }}</h2>
+            {{ $cat := . }}
+            {{ range where $projects "category" $cat }}
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="{{ .image }}" alt="{{ .title }}">
+                </div>
+                <div class="project-info">
+                    <div class="project-header">
+                        <h3 class="project-title">{{ .title }}</h3>
+                        {{ if .links }}
+                        {{ $links := .links }}
+                        <span class="project-links">
+                            {{ range $index, $element := $links }}
+                            <a href="{{ .url }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                                {{ .name }}
+                            </a>{{ if ne (add $index 1) (len $links) }}, {{ end }}
+                            {{ end }}
+                        </span>
+                        {{ end }}
+                    </div>
+                    <p class="project-description">{{ .description }}</p>
+                    {{ if .tags }}
+                    <div class="project-tags">
+                        {{ range .tags }}
+                        <span class="tag">#{{ . }}</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+            <hr class="project-divider">
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
+</div>
+{{ end }}
