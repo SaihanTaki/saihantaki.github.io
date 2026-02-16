@@ -2,6 +2,7 @@ baseURL: "https://saihantaki.github.io/"
 title: Saihan's Space
 pagination.pagerSize: 5
 theme: PaperMod
+layoutDir: layouts
 
 enableRobotsTXT: true
 buildDrafts: false

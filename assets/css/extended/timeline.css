@@ -1,0 +1,94 @@
+/* Timeline styling */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 120px;
+    /* Shifted right to accommodate longer dates like "September 2024" */
+    height: 100%;
+    width: 2px;
+    background: var(--border);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding-left: 150px;
+    /* Increased padding for the content card */
+}
+
+.timeline-year {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 110px;
+    /* Increased width to prevent wrapping for "September" */
+    text-align: right;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--secondary);
+    background: var(--theme);
+    z-index: 1;
+    white-space: nowrap;
+    /* Force single line */
+}
+
+.timeline-year::after {
+    content: '';
+    position: absolute;
+    right: -14px;
+    /* Positioned on the line at 120px (110 width + 10 margin) */
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    border: 2px solid var(--theme);
+}
+
+.timeline-content {
+    padding: 15px;
+    background: var(--entry);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.timeline-content:hover {
+    transform: translateX(5px);
+}
+
+.timeline-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: var(--primary);
+}
+
+.timeline-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--secondary);
+}
+
+@media (max-width: 600px) {
+    .timeline::before {
+        left: 15px;
+    }
+
+    .timeline-item {
+        padding-left: 40px;
+    }
+
+    .timeline-year {
+        left: -5px;
+    }
+}
