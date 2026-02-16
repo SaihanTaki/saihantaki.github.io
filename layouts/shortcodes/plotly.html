@@ -16,6 +16,16 @@
             fetch("{{ $json | relURL }}")
                 .then(response => response.json())
                 .then(data => {
+                    // Ensure layout exists
+                    if (!data.layout) data.layout = {};
+
+
+                    data.layout.paper_bgcolor = "white";
+
+                    // Optional: set font color to white for visibility
+                    if (!data.layout.font) data.layout.font = {};
+                    data.layout.font.color = "black";
+
                     Plotly.newPlot('{{ $id }}', data.data, data.layout);
                 })
                 .catch(error => console.error('Error loading Plotly JSON:', error));
