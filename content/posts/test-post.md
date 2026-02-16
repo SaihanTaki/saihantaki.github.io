@@ -113,10 +113,13 @@ This is a colour shortcode {{< colortext "Hello My name is Saihan" "#97E5D7" >}}
 This is a colour shortcode {{< colortext "Hello My name is Saihan" "aquamarine" >}}.
 
 ## Plotly 3d plot
-{{< plotly json="/test_plotly_3d.json" height="400px" >}}
+{{< plotly json="/test_plotly_3d.json" height="600px" >}}
 
 ## plotly widget
 {{< plotly json="/test_plotly_widget.json" height="800px" >}}
+
+## Three.js 3D Scene
+{{< threejs js="/js/threejs-cube.js" init="initRotatingCube" height="400px" >}}
 
 ## Mermaid
 

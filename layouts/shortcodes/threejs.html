@@ -1,0 +1,40 @@
+{{ $js := .Get "js" }}
+{{ $init := .Get "init" }}
+{{ $height := .Get "height" | default "500px" }}
+{{ $id := delimit (slice "threejs" (md5 $js) (now.UnixNano)) "-" }}
+
+<div id="{{ $id }}" class="threejs-container"
+    style="height: {{ $height }}; width: 100%; position: relative; overflow: hidden; background: #000; border-radius: 8px; margin: 20px 0;">
+</div>
+
+{{ if not (.Page.Scratch.Get "threejs_loaded") }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+{{ .Page.Scratch.Set "threejs_loaded" true }}
+{{ end }}
+
+<script>
+    (function () {
+        const scriptId = 'threejs-script-{{ md5 $js }}';
+        const initFnName = '{{ $init }}';
+        const containerId = '{{ $id }}';
+
+        function runInit() {
+            if (typeof window[initFnName] === 'function') {
+                window[initFnName](containerId, THREE);
+            } else {
+                // If the script is still loading, this might fail. We'll check again in a bit.
+                setTimeout(runInit, 100);
+            }
+        }
+
+        if (!document.getElementById(scriptId)) {
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = "{{ $js | relURL }}";
+            script.onload = runInit;
+            document.head.appendChild(script);
+        } else {
+            runInit();
+        }
+    })();
+</script>
