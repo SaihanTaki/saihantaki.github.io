@@ -1,0 +1,117 @@
+{
+  "data": [
+    {
+      "x": [-10,-5,0,5,10],
+      "y": [-10,-5,0,5,10],
+      "mode": "lines",
+      "type": "scatter",
+      "name": "y = m x + c"
+    }
+  ],
+
+  "layout": {
+    "title": { "text": "Interactive Line: y = m x + c" },
+
+    "sliders": [
+
+      {
+        "active": 2,
+        "currentvalue": { "prefix": "Slope (m): " },
+        "pad": { "t": 40 },
+
+        "steps": [
+          {
+            "label": "-2",
+            "method": "update",
+            "args": [
+              { "y": [[20,10,0,-10,-20]] },
+              { "title": "y = -2x + c" }
+            ]
+          },
+          {
+            "label": "-1",
+            "method": "update",
+            "args": [
+              { "y": [[10,5,0,-5,-10]] },
+              { "title": "y = -1x + c" }
+            ]
+          },
+          {
+            "label": "0",
+            "method": "update",
+            "args": [
+              { "y": [[0,0,0,0,0]] },
+              { "title": "y = 0x + c" }
+            ]
+          },
+          {
+            "label": "1",
+            "method": "update",
+            "args": [
+              { "y": [[-10,-5,0,5,10]] },
+              { "title": "y = 1x + c" }
+            ]
+          },
+          {
+            "label": "2",
+            "method": "update",
+            "args": [
+              { "y": [[-20,-10,0,10,20]] },
+              { "title": "y = 2x + c" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "active": 2,
+        "currentvalue": { "prefix": "Constant (c): " },
+        "pad": { "t": 120 },
+
+        "steps": [
+          {
+            "label": "-10",
+            "method": "update",
+            "args": [
+              { "y": [[-20,-15,-10,-5,0]] },
+              { "title": "y = m x - 10" }
+            ]
+          },
+          {
+            "label": "-5",
+            "method": "update",
+            "args": [
+              { "y": [[-15,-10,-5,0,5]] },
+              { "title": "y = m x - 5" }
+            ]
+          },
+          {
+            "label": "0",
+            "method": "update",
+            "args": [
+              { "y": [[-10,-5,0,5,10]] },
+              { "title": "y = m x" }
+            ]
+          },
+          {
+            "label": "5",
+            "method": "update",
+            "args": [
+              { "y": [[-5,0,5,10,15]] },
+              { "title": "y = m x + 5" }
+            ]
+          },
+          {
+            "label": "10",
+            "method": "update",
+            "args": [
+              { "y": [[0,5,10,15,20]] },
+              { "title": "y = m x + 10" }
+            ]
+          }
+        ]
+      }
+
+    ]
+  }
+}
