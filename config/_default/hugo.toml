@@ -40,3 +40,7 @@ powered_by = ""
   [contentTypes.'text/org']
   [contentTypes.'text/pandoc']
   [contentTypes.'text/rst']
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

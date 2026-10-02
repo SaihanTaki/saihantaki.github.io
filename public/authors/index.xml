@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Authors on Saihan&#39;s Space</title>
-    <link>/authors/</link>
+    <link>//localhost:1313/authors/</link>
     <description>Recent content in Authors on Saihan&#39;s Space</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <managingEditor>saihan0176@gmail.com (Abdullah Saihan)</managingEditor>
     <webMaster>saihan0176@gmail.com (Abdullah Saihan)</webMaster>
     <copyright>© 2026 Abdullah Saihan</copyright>
-    <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="//localhost:1313/authors/index.xml" rel="self" type="application/rss+xml" />
     
   </channel>
 </rss>
