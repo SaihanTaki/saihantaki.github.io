@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Saihan&#39;s Space</title>
+    <link>/categories/</link>
+    <description>Recent content in Categories on Saihan&#39;s Space</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <managingEditor>saihan0176@gmail.com (Abdullah Saihan)</managingEditor>
+    <webMaster>saihan0176@gmail.com (Abdullah Saihan)</webMaster>
+    <copyright>© 2026 Abdullah Saihan</copyright>
+    <lastBuildDate>Mon, 07 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Blog</title>
+      <link>/categories/blog/</link>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 +0000</pubDate>
+      <author>saihan0176@gmail.com (Abdullah Saihan)</author>
+      <guid>/categories/blog/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Post</title>
+      <link>/categories/post/</link>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 +0000</pubDate>
+      <author>saihan0176@gmail.com (Abdullah Saihan)</author>
+      <guid>/categories/post/</guid>
+      <description></description>
+      
+    </item>
+    
+  </channel>
+</rss>

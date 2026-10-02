@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Simulation</title>
+<style>
+  body { font-family: sans-serif; margin: 0; padding: 16px; background: #111; color: #eee; }
+  button { font-size: 1.2rem; padding: 12px 24px; cursor: pointer; }
+  #count { font-size: 2rem; margin-top: 16px; }
+</style>
+</head>
+<body>
+  <h2>Demo Simulation</h2>
+  <p>This is a self-contained HTML file embedded via the <code>html</code> shortcode.</p>
+  <button id="click">Click me</button>
+  <div id="count">0</div>
+  <script>
+    let n = 0;
+    document.getElementById('click').addEventListener('click', () => {
+      document.getElementById('count').textContent = ++n;
+    });
+  </script>
+</body>
+</html>

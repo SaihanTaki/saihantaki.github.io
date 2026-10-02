@@ -1,0 +1,66 @@
+{{ define "main" }}
+  {{ $posts := where site.RegularPages ".Section" "posts" }}
+  {{ $posts = $posts.ByDate }}
+  {{ $dateFormat := site.Params.dateFormat | default "2 January 2006" }}
+
+  <header class="mt-5 flex items-end gap-2">
+    <h1 class="text-4xl font-extrabold leading-none text-neutral-900 dark:text-neutral">
+      Archive
+    </h1>
+    <a
+      href="/posts/index.xml"
+      class="text-2xl text-neutral-500 dark:text-neutral-400 hover:text-primary-600 print:hidden"
+      aria-label="RSS feed"
+      title="RSS feed">
+      {{ partial "icon.html" "rss" }}
+    </a>
+  </header>
+
+  {{ if gt (len $posts) 0 }}
+    <section class="space-y-8 w-full">
+      {{ range $yearGroup := ($posts.GroupByDate "2006") }}
+        <div class="space-y-6">
+          <h2 class="mt-8 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300">
+            {{ $yearGroup.Key }}
+            <span class="text-sm font-normal text-neutral-400 dark:text-neutral-500">
+              ({{ len $yearGroup.Pages }})
+            </span>
+          </h2>
+          {{ range $monthGroup := $yearGroup.Pages.GroupByDate "2006-01" }}
+            {{ $firstPage := index $monthGroup.Pages 0 }}
+            <div class="space-y-3 pl-4 border-l-2 border-neutral-200 dark:border-neutral-700 ml-2">
+              <h3 class="text-lg font-semibold text-neutral-600 dark:text-neutral-400">
+                {{ $firstPage.Date.Format "January" }}
+                <span class="text-sm font-normal text-neutral-400 dark:text-neutral-500">
+                  ({{ len $monthGroup.Pages }})
+                </span>
+              </h3>
+              {{ range $monthGroup.Pages }}
+                <article class="py-1">
+                  <a href="{{ .RelPermalink }}" class="not-prose text-neutral-900 dark:text-neutral hover:underline">
+                    {{ .Title | emojify }}
+                  </a>
+                  <div class="text-sm text-neutral-500 dark:text-neutral-400">
+                    {{ .Date.Format $dateFormat }}
+                    {{ if gt .ReadingTime 0 }}
+                      <span class="px-1">&middot;</span>{{ .ReadingTime }} min
+                    {{ end }}
+                    {{ if gt .WordCount 0 }}
+                      <span class="px-1">&middot;</span>{{ .WordCount }} words
+                    {{ end }}
+                  </div>
+                </article>
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+      {{ end }}
+    </section>
+  {{ else }}
+    <section class="mt-10 prose dark:prose-invert">
+      <p class="py-8 border-t">
+        <em>{{ i18n "list.no_articles" | emojify }}</em>
+      </p>
+    </section>
+  {{ end }}
+{{ end }}

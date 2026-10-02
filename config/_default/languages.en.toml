@@ -1,0 +1,29 @@
+languageCode = "en"
+languageName = "English"
+weight = 1
+title = "Saihan's Space"
+contentDir = "content/en"
+
+[params]
+displayName = "EN"
+isoCode = "en"
+  rtl = false
+  logo = "img/logo.png"
+  description = "My awesome website"
+dateFormat = "2 January 2006"
+
+  [params.author]
+    name = "Abdullah Saihan"
+    image = "saihan_profile.jpeg"
+    email = "saihan0176@gmail.com"
+    headline = "Learning, building and sharing along the way"
+    bio = "Learning, building and sharing along the way"
+
+    [[params.author.links]]
+    x-twitter = "https://x.com/saihantaki"
+
+    [[params.author.links]]
+    linkedin = "https://www.linkedin.com/in/saihantaki"
+
+    [[params.author.links]]
+    github = "https://github.com/SaihanTaki"

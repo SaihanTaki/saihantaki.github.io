@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Model Parameters Network</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #ffffff; /* Matches your shortcode card background */
+      font-family: 'Fira Code', monospace, sans-serif;
+    }
+
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Subtle overlay instruction */
+    #overlay {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #71717a;
+      font-size: 12px;
+      pointer-events: none; /* Allows clicking through to the 3D canvas */
+      user-select: none;
+    }
+  </style>
+
+  <!-- Modern Three.js Import Map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <div id="canvas-container"></div>
+  <div id="overlay">Interactive 3D Space: Click & Drag to Rotate, Scroll to Zoom</div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // 1. Scene Setup
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
+    // Add light fog to fade out distant nodes
+    scene.fog = new THREE.FogExp2(0xffffff, 0.0015);
+
+    // 2. Camera Setup
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+    camera.position.z = 600;
+
+    // 3. Renderer Setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    // 4. Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1.0;
+    controls.enablePan = false;
+
+    // 5. Data / Geometry Generation (The "Network")
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const particleCount = 400; // Number of "parameters"
+    const maxRadius = 250;
+    
+    // Use the color palette from the previous chart
+    const colorsList = [
+      new THREE.Color('#b45309'), // Qwen3
+      new THREE.Color('#b91c1c'), // DeepSeek
+      new THREE.Color('#0284c7'), // GLM
+      new THREE.Color('#15803d'), // Voxtral
+      new THREE.Color('#1d4ed8'), // GPT
+      new THREE.Color('#be185d')  // LFM
+    ];
+
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    // Generate random particles within a sphere
+    for (let i = 0; i < particleCount; i++) {
+      const theta = Math.random() * 2 * Math.PI;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      const r = maxRadius * Math.cbrt(Math.random()); 
+
+      const x = r * Math.sin(phi) * Math.cos(theta);
+      const y = r * Math.sin(phi) * Math.sin(theta);
+      const z = r * Math.cos(phi);
+
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+
+      // Assign a random color from palette
+      const color = colorsList[Math.floor(Math.random() * colorsList.length)];
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+    }
+
+    const particlesGeometry = new THREE.BufferGeometry();
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    // Material for the nodes
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 6,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.8,
+      sizeAttenuation: true
+    });
+
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    group.add(particles);
+
+    // 6. Draw connection lines between nearby nodes
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0xcbd5e1,
+      transparent: true,
+      opacity: 0.25
+    });
+
+    const lineGeometry = new THREE.BufferGeometry();
+    const linePositions = [];
+    const connectionDistance = 60; // Max distance to draw a line
+
+    for (let i = 0; i < particleCount; i++) {
+      for (let j = i + 1; j < particleCount; j++) {
+        const dx = positions[i * 3] - positions[j * 3];
+        const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+        const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        if (dist < connectionDistance) {
+          linePositions.push(
+            positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
+            positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2]
+          );
+        }
+      }
+    }
+
+    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+    group.add(lines);
+
+    // 7. Handle Window Resize
+    window.addEventListener('resize', onWindowResize, false);
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // 8. Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      // Gentle pulsing of the network
+      const time = Date.now() * 0.001;
+      group.scale.setScalar(1 + 0.02 * Math.sin(time));
+
+      controls.update(); // Required for damping and autoRotate
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+
+</body>
+</html>
