@@ -23,11 +23,16 @@
 {{- $height := .Get "height" -}}
 
 <figure class="not-prose simulation my-6 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900">
-  {{- with $title }}
-  <figcaption class="simulation__title border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-700 dark:text-neutral-100">
-    {{ . }}
+  <figcaption class="simulation__chrome flex items-center gap-2 border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-700 dark:text-neutral-100">
+    <svg class="simulation__dots h-3 w-12 shrink-0" viewBox="0 0 46 12" aria-hidden="true">
+      <circle cx="6"  cy="6" r="5" fill="#ff5f57"/>
+      <circle cx="23" cy="6" r="5" fill="#febc2e"/>
+      <circle cx="40" cy="6" r="5" fill="#28c840"/>
+    </svg>
+    {{- with $title }}
+    <span class="simulation__title">{{ . }}</span>
+    {{- end }}
   </figcaption>
-  {{- end }}
   <div
     class="simulation__canvas min-w-0 overflow-x-auto p-4 sm:p-6"
     {{- with $height }} style="min-height: {{ . | safeCSS }};"{{ end }}>
