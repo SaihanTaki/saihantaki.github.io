@@ -1,0 +1,36 @@
+{{/*
+  Shortcode: simulation
+  Inlines arbitrary HTML/SVG/canvas content (interactive simulations,
+  diagrams, visualizations, static HTML blocks) inside a consistent
+  themed container with a subtle graph-paper grid background.
+
+  Parameters:
+    title  (optional) - Optional caption rendered above the canvas.
+                         Omit for an untitled block.
+    height (optional) - Optional min-height for the canvas. Any CSS length
+                         (e.g. "500px", "60vh"). When omitted the canvas
+                         sizes to its content.
+
+  Behavior:
+    - Renders the inner content verbatim (no escaping) so authors can use
+      SVG, canvas, scripts, controls, etc.
+    - Outer container provides the grid surface; inner controls remain
+      fully author-controlled.
+    - No JavaScript is added by the shortcode itself.
+*/}}
+
+{{- $title  := .Get "title"  -}}
+{{- $height := .Get "height" -}}
+
+<figure class="not-prose simulation my-6 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900">
+  {{- with $title }}
+  <figcaption class="simulation__title border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-700 dark:text-neutral-100">
+    {{ . }}
+  </figcaption>
+  {{- end }}
+  <div
+    class="simulation__canvas min-w-0 overflow-x-auto p-4 sm:p-6"
+    {{- with $height }} style="min-height: {{ . | safeCSS }};"{{ end }}>
+    {{ .Inner }}
+  </div>
+</figure>
