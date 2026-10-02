@@ -1,1 +1,28 @@
 .main-menu img.logo { height: 24px; width: 24px; }
+
+/*
+ * html-content component
+ * Companion styles for the html-content shortcode.
+ * Most styling is via Tailwind utilities applied in the shortcode template.
+ * This file only holds rules that utilities express awkwardly.
+ *
+ * Note: Blowfish's head.html auto-includes assets/css/custom.css (it does
+ * NOT walk assets/css/extended/), so this is where component-specific
+ * overrides for the project live.
+ */
+
+/* Themed neutral background behind the iframe so any transparent regions
+ * of the embedded document blend with the container in both light and
+ * dark mode. Uses Tailwind v3's --color-neutral-* CSS variables (already
+ * emitted by Blowfish's compiled main.css). */
+.html-content__frame {
+  background-color: rgba(var(--color-neutral-100), 1);
+}
+html.dark .html-content__frame {
+  background-color: rgba(var(--color-neutral-800), 1);
+}
+
+/* Allow the figure to shrink inside flex/grid parents without overflowing. */
+.html-content {
+  min-width: 0;
+}

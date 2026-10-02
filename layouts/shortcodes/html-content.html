@@ -1,0 +1,75 @@
+{{/*
+  Shortcode: html-content
+  Embeds a local HTML file (interactive simulation, demo, or static HTML)
+  via iframe inside a themed, responsive container.
+
+  Parameters:
+    src     (required) - Resource path. Three forms supported:
+                          1. Bare filename (e.g. "demo.html") - page-bundle resource
+                          2. Absolute path (e.g. "/simulations/demo.html") - static asset
+                          3. Page-relative subpath (e.g. "sims/chart.html") - page-bundle resource
+    title   (optional) - Used as the iframe title (a11y) AND the visible caption.
+                         Defaults to "Embedded content".
+    caption (optional) - Overrides the visible caption only; falls back to title.
+                         Useful when the a11y title should differ from the visual label.
+    height  (optional) - Iframe height. Any CSS length (e.g. "600px", "80vh").
+                         Defaults to "500px".
+
+  Behavior:
+    - Resolves src against page resources first, then global resources, then
+      passes through if it already looks like an absolute path.
+    - Renders an inline notice (not a broken iframe) if the resource cannot
+      be located.
+*/}}
+
+{{- $srcParam := .Get "src" -}}
+{{- $title   := .Get "title"   | default "Embedded content" -}}
+{{- $height  := .Get "height"  | default "500px" -}}
+{{- $caption := .Get "caption" | default $title -}}
+
+{{- $resolved := "" -}}
+{{- $missing  := false -}}
+
+{{- if not $srcParam -}}
+  {{- $missing = true -}}
+{{- else -}}
+  {{- $r := .Page.Resources.GetMatch (printf "**/%s" $srcParam) -}}
+  {{- if $r -}}
+    {{- $resolved = $r.RelPermalink -}}
+  {{- else -}}
+    {{- $r2 := resources.GetMatch (printf "**/%s" $srcParam) -}}
+    {{- if $r2 -}}
+      {{- $resolved = $r2.RelPermalink -}}
+    {{- else if strings.HasPrefix $srcParam "/" -}}
+      {{- $resolved = $srcParam -}}
+    {{- else -}}
+      {{- $missing = true -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $missing -}}
+  <aside
+    class="not-prose html-content html-content--missing my-4 rounded-lg border border-neutral-300 bg-neutral-50 px-4 py-3 text-sm text-neutral-800 dark:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100"
+    role="note">
+    <strong class="font-semibold">Embedded content unavailable.</strong>
+    <span class="mt-1 block opacity-80">
+      Could not resolve <code class="font-mono">{{ $srcParam }}</code> as a page or site resource.
+      Check that the file exists and the path is correct.
+    </span>
+  </aside>
+{{- else -}}
+  <figure class="not-prose html-content my-4 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-900">
+    <figcaption class="html-content__caption border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-600 dark:text-neutral-100">
+      {{ $caption }}
+    </figcaption>
+    <iframe
+      class="html-content__frame block w-full border-0"
+      style="height: {{ $height | safeCSS }};"
+      src="{{ $resolved }}"
+      title="{{ $title }}"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+  </figure>
+{{- end -}}

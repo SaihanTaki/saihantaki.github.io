@@ -133,8 +133,8 @@
   <link
     type="text/css"
     rel="stylesheet"
-    href="/css/main.bundle.min.819b3c3c50e87bfbd765e37119237159db283e999a1c22db4231165d891ccaa89214f1e9721e557036f07c19b00ec20dc096c7f9cd929954f3429587203096b2.css"
-    integrity="sha512-gZs8PFDoe/vXZeNxGSNxWdsoPpmaHCLbQjEWXYkcyqiSFPHpch5VcDbwfBmwDsINwJbH&#43;c2SmVTzQpWHIDCWsg==">
+    href="/css/main.bundle.min.c1608994cf13b805ff3de34b0fbdba9cbc24d29623bfaef565e4907579512aa625f14be0fc9c3370b72b123e23d8902198a4b93a106dc3767d2766a390a4264d.css"
+    integrity="sha512-wWCJlM8TuAX/PeNLD726nLwk0pYjv671ZeSQdXlRKqYl8Uvg/JwzcLcrEj4j2JAhmKS5OhBtw3Z9J2ajkKQmTQ==">
 
   
   
@@ -272,7 +272,7 @@
     "keywords": ["shortcode","html","embed"],
     
     "mainEntityOfPage": "//localhost:1313/posts/embedded-sim-test/",
-    "wordCount":  48 
+    "wordCount":  54 
   }]
   </script>
 
@@ -925,7 +925,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <time datetime="2026-09-07T00:00:00&#43;00:00">7 September 2026</time><span class="px-2 text-primary-500">&middot;</span><span>48 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
+      <time datetime="2026-09-07T00:00:00&#43;00:00">7 September 2026</time><span class="px-2 text-primary-500">&middot;</span><span>54 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
     
 
     
@@ -1090,6 +1090,7 @@
     <li><a href="#custom-heiight-embed">Custom heiight embed</a></li>
     <li><a href="#test-chart">Test Chart</a></li>
     <li><a href="#gif-test">GIF Test</a></li>
+    <li><a href="#autoregressive-language-model">Autoregressive Language model</a></li>
     <li><a href="#prefil-and-decode">Prefil and decode</a></li>
   </ul>
 </nav>
@@ -1108,6 +1109,7 @@
     <li><a href="#custom-heiight-embed">Custom heiight embed</a></li>
     <li><a href="#test-chart">Test Chart</a></li>
     <li><a href="#gif-test">GIF Test</a></li>
+    <li><a href="#autoregressive-language-model">Autoregressive Language model</a></li>
     <li><a href="#prefil-and-decode">Prefil and decode</a></li>
   </ul>
 </nav>
@@ -1136,11 +1138,19 @@
     </span>
     
 </h2>
-<figure style="border:1px solid #ccc; background-color:#FFF; border-radius:8px; overflow:hidden; width:100%; margin:0;padding:0;">
-<figcaption style="padding:8px 12px; font-weight:600; font-size:16px; color:black; border-bottom:1px solid #ccc;">Embedded content</figcaption>
-<iframe src="3d-sim.html" height="500px" title="Parameter Space Topology" style="border:0;width:100%;display:block;margin:0px" loading="lazy"></iframe>
-</figure>
-
+<figure class="not-prose html-content my-4 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-900">
+    <figcaption class="html-content__caption border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-600 dark:text-neutral-100">
+      Parameter Space Topology
+    </figcaption>
+    <iframe
+      class="html-content__frame block w-full border-0"
+      style="height: 500px;"
+      src="/posts/embedded-sim-test/3d-sim.html"
+      title="Parameter Space Topology"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+  </figure>
 
 <h2 class="relative group">Custom heiight embed
     <div id="custom-heiight-embed" class="anchor"></div>
@@ -1151,11 +1161,19 @@
     </span>
     
 </h2>
-<figure style="border:1px solid #ccc; background-color:#FFF; border-radius:8px; overflow:hidden; width:100%; margin:0;padding:0;">
-<figcaption style="padding:8px 12px; font-weight:600; font-size:16px; color:black; border-bottom:1px solid #ccc;">Embedded content</figcaption>
-<iframe src="/simulations/demo-sim.html" height="400px" title="Smaller simulation" style="border:0;width:100%;display:block;margin:0px" loading="lazy"></iframe>
-</figure>
-
+<figure class="not-prose html-content my-4 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-900">
+    <figcaption class="html-content__caption border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-600 dark:text-neutral-100">
+      Smaller simulation
+    </figcaption>
+    <iframe
+      class="html-content__frame block w-full border-0"
+      style="height: 400px;"
+      src="/simulations/demo-sim.html"
+      title="Smaller simulation"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+  </figure>
 
 <h2 class="relative group">Test Chart
     <div id="test-chart" class="anchor"></div>
@@ -1166,11 +1184,19 @@
     </span>
     
 </h2>
-<figure style="border:1px solid #ccc; background-color:#FFF; border-radius:8px; overflow:hidden; width:100%; margin:0;padding:0;">
-<figcaption style="padding:8px 12px; font-weight:600; font-size:16px; color:black; border-bottom:1px solid #ccc;">Embedded content</figcaption>
-<iframe src="sims/chart-ex.html" height="500px" title="Charting Test" style="border:0;width:100%;display:block;margin:0px" loading="lazy"></iframe>
-</figure>
-
+<figure class="not-prose html-content my-4 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-900">
+    <figcaption class="html-content__caption border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-600 dark:text-neutral-100">
+      Charting Test
+    </figcaption>
+    <iframe
+      class="html-content__frame block w-full border-0"
+      style="height: 500px;"
+      src="/posts/embedded-sim-test/sims/chart-ex.html"
+      title="Charting Test"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+  </figure>
 
 <h2 class="relative group">GIF Test
     <div id="gif-test" class="anchor"></div>
@@ -1188,6 +1214,29 @@
   
   </figure>
 
+<h2 class="relative group">Autoregressive Language model
+    <div id="autoregressive-language-model" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#autoregressive-language-model" aria-label="Anchor">#</a>
+    </span>
+    
+</h2>
+<figure class="not-prose html-content my-4 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-900">
+    <figcaption class="html-content__caption border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-600 dark:text-neutral-100">
+      LLM
+    </figcaption>
+    <iframe
+      class="html-content__frame block w-full border-0"
+      style="height: 300px;"
+      src="/posts/embedded-sim-test/sims/auto-regressive-llm.html"
+      title="LLM"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+  </figure>
+
 <h2 class="relative group">Prefil and decode
     <div id="prefil-and-decode" class="anchor"></div>
     
@@ -1197,11 +1246,19 @@
     </span>
     
 </h2>
-<figure style="border:1px solid #ccc; background-color:#FFF; border-radius:8px; overflow:hidden; width:100%; margin:0;padding:0;">
-<figcaption style="padding:8px 12px; font-weight:600; font-size:16px; color:black; border-bottom:1px solid #ccc;">Embedded content</figcaption>
-<iframe src="sims/prefil-decode-sim.html" height="500px" title="Embedded content" style="border:0;width:100%;display:block;margin:0px" loading="lazy"></iframe>
-</figure>
-
+<figure class="not-prose html-content my-4 w-full overflow-hidden rounded-lg border border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-900">
+    <figcaption class="html-content__caption border-b border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-800 dark:border-neutral-600 dark:text-neutral-100">
+      Embedded content
+    </figcaption>
+    <iframe
+      class="html-content__frame block w-full border-0"
+      style="height: 500px;"
+      src="/posts/embedded-sim-test/sims/prefil-decode-sim.html"
+      title="Embedded content"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+  </figure>
 
           
           

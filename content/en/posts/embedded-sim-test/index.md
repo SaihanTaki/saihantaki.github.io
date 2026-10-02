@@ -11,22 +11,28 @@ The `html` shortcode embeds a standalone HTML file into a blog post via an ifram
 
 ## 3d simulation 
 
-{{< html src="3d-sim.html" height="500px" title="Parameter Space Topology">}}
+{{< html-content src="3d-sim.html" height="500px" title="Parameter Space Topology">}}
 
 ## Custom heiight embed
 
-{{< html src="/simulations/demo-sim.html" height="400px" title="Smaller simulation" >}}
+{{< html-content src="/simulations/demo-sim.html" height="400px" title="Smaller simulation" >}}
 
 
 ## Test Chart
-{{< html src="sims/chart-ex.html" height="500px" title="Charting Test" >}}
+{{< html-content src="sims/chart-ex.html" height="500px" title="Charting Test" >}}
 
 ## GIF Test
 
 {{< figure src="/images/test.gif" >}}
 
+## Autoregressive Language model
+
+{{< html-content src="sims/auto-regressive-llm.html" height="300px" title="LLM" >}}
+
+
+
 ## Prefil and decode
 
-{{< html src="sims/prefil-decode-sim.html" height="500px" >}}
+{{< html-content src="sims/prefil-decode-sim.html" height="500px" >}}
 
 

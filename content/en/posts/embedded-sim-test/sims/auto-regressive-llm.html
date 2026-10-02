@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoregressive LLM Text Generation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    keyframes: {
+                        pop: {
+                            '0%': { transform: 'scale(0.85)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(245, 158, 11, 0.4)' },
+                            '50%': { transform: 'scale(1.03)', boxShadow: '0 0 12px 2px rgba(245, 158, 11, 0.5)' }
+                        },
+                        flowArrow: {
+                            '0%': { transform: 'translateX(-3px)', opacity: '0.4' },
+                            '50%': { transform: 'translateX(3px)', opacity: '1' },
+                            '100%': { transform: 'translateX(-3px)', opacity: '0.4' }
+                        }
+                    },
+                    animation: {
+                        'pop': 'pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'pulse-glow': 'pulseGlow 1.8s infinite ease-in-out',
+                        'flow-arrow': 'flowArrow 1.5s infinite ease-in-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Prevent vertical scrollbars in iframe embeds */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #f8fafc;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans h-full flex flex-col justify-between p-2.5 sm:p-3 select-none">
+
+    <!-- Compact Embedded Header -->
+    <header class="flex items-center justify-between gap-2 pb-2 border-b border-slate-200 shrink-0">
+        <div class="flex items-center gap-2">
+            <div class="bg-indigo-600 text-white p-1 rounded-md shadow-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <h1 class="text-xs sm:text-sm font-bold text-slate-900 tracking-tight">Autoregressive LLM Generation</h1>
+            <span id="step-badge" class="px-2 py-0.5 bg-indigo-100 text-indigo-700 font-mono text-[11px] font-semibold rounded-full border border-indigo-200">
+                Step 0 of 10
+            </span>
+        </div>
+
+        <!-- Progress Dots Indicator -->
+        <div id="step-dots" class="flex items-center gap-1">
+            <!-- Populated via JS -->
+        </div>
+    </header>
+
+    <!-- Main Pipeline Section (16:9 Aspect ratio optimization) -->
+    <main class="my-auto py-1 flex-1 flex flex-col justify-center">
+        <div class="grid grid-cols-12 gap-1.5 sm:gap-2 items-center">
+            
+            <!-- Box 1: INPUT CONTEXT (Left) -->
+            <div class="col-span-5 bg-white border border-slate-200 rounded-xl p-2 sm:p-2.5 shadow-2xs flex flex-col h-28 sm:h-32 justify-between">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                        Input Context
+                    </span>
+                    <span id="token-count-tag" class="text-[10px] font-mono text-slate-500 font-medium">5 tokens</span>
+                </div>
+                
+                <!-- Token Container -->
+                <div id="input-tokens-box" class="flex flex-wrap gap-1 p-1.5 bg-slate-50 border border-slate-100 rounded-lg h-full overflow-y-auto no-scrollbar items-start content-start">
+                    <!-- Tokens dynamically rendered -->
+                </div>
+            </div>
+
+            <!-- Arrow 1 -->
+            <div class="col-span-1 flex justify-center text-slate-400">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 animate-flow-arrow text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </div>
+
+            <!-- Box 2: LLM TRANSFORMER CORE (Center) -->
+            <div id="llm-node" class="col-span-2 bg-slate-900 text-white rounded-xl p-2 shadow-md h-28 sm:h-32 flex flex-col items-center justify-center text-center relative overflow-hidden transition-all duration-300 border border-slate-800">
+                <div id="nn-glow" class="absolute inset-0 bg-indigo-500/10 opacity-0 transition-opacity"></div>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="nn-icon" class="p-1.5 bg-slate-800 border border-slate-700 rounded-lg mb-1">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-[11px] font-bold tracking-tight text-slate-200">LLM Core</span>
+                    <span id="nn-status" class="text-[9px] font-mono text-slate-400 mt-0.5">Forward Pass</span>
+                </div>
+            </div>
+
+            <!-- Arrow 2 -->
+            <div class="col-span-1 flex justify-center text-slate-400">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 animate-flow-arrow text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </div>
+
+            <!-- Box 3: PREDICTED TOKEN (Right) -->
+            <div class="col-span-3 bg-white border border-slate-200 rounded-xl p-2 sm:p-2.5 shadow-2xs flex flex-col h-28 sm:h-32 justify-between">
+                <span class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Predicted Token
+                </span>
+
+                <div class="flex items-center justify-center flex-1 my-1">
+                    <div id="output-token-box" class="transition-all duration-200">
+                        <!-- Predicted Token Badge -->
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <span id="pos-tag" class="text-[9px] font-mono text-slate-400">Target T₆</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Contextual Explanation Banner -->
+        <div class="mt-2 px-3 py-1.5 bg-indigo-50/80 border border-indigo-100 rounded-lg text-slate-700 text-[11px] sm:text-xs flex items-center gap-2 shadow-2xs">
+            <span class="p-0.5 bg-indigo-600 text-white rounded font-bold text-[9px] uppercase px-1 shrink-0">Step Info</span>
+            <p id="step-explanation" class="truncate font-medium text-slate-700">
+                Initial prompt loaded. Click "Next" to begin autoregressive token generation.
+            </p>
+        </div>
+    </main>
+
+    <!-- Compact Footer Navigation Control Bar -->
+    <footer class="pt-1.5 border-t border-slate-200 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-1.5">
+            <button id="btn-prev" onclick="goToPrev()" class="px-2.5 py-1 bg-white border border-slate-300 hover:bg-slate-50 active:bg-slate-100 text-slate-700 font-semibold text-xs rounded-md shadow-2xs transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                Prev
+            </button>
+            <button id="btn-next" onclick="goToNext()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold text-xs rounded-md shadow-2xs transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
+                Next
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+
+        <!-- Full String Accumulation Preview -->
+        <div class="hidden sm:flex items-center gap-1 text-[11px] font-mono text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200 max-w-[320px] truncate">
+            <span class="text-slate-400 font-sans text-[10px]">Text:</span>
+            <span id="string-preview" class="truncate font-medium">"The capital of France is"</span>
+        </div>
+
+        <button onclick="resetVisualization()" class="px-2 py-1 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded text-xs transition-all flex items-center gap-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            Reset
+        </button>
+    </footer>
+
+    <!-- Interactive Logic Script -->
+    <script>
+        // Data model representing the exact requested text generation sequence
+        const steps = [
+            {
+                step: 0,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: [],
+                outputToken: "Paris",
+                predictingPos: "T₆",
+                explanation: "Initial prompt loaded (5 tokens). Click 'Next' to generate token T₆.",
+                fullText: "The capital of France is"
+            },
+            {
+                step: 1,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris"],
+                outputToken: ".",
+                predictingPos: "T₇",
+                explanation: "Token [Paris] generated! It is appended to the input context to predict T₇.",
+                fullText: "The capital of France is Paris"
+            },
+            {
+                step: 2,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", "."],
+                outputToken: "It",
+                predictingPos: "T₈",
+                explanation: "Tokens [Paris] and [.] are added to input context (7 tokens) to predict T₈.",
+                fullText: "The capital of France is Paris."
+            },
+            {
+                step: 3,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It"],
+                outputToken: "is",
+                predictingPos: "T₉",
+                explanation: "Input context grows to 8 tokens. Model predicts token [is].",
+                fullText: "The capital of France is Paris. It"
+            },
+            {
+                step: 4,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It", "is"],
+                outputToken: "known",
+                predictingPos: "T₁₀",
+                explanation: "Context now contains 9 tokens. Model predicts token [known].",
+                fullText: "The capital of France is Paris. It is"
+            },
+            {
+                step: 5,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It", "is", "known"],
+                outputToken: "for",
+                predictingPos: "T₁₁",
+                explanation: "Context expands to 10 tokens ([...is], [known]). Model predicts [for].",
+                fullText: "The capital of France is Paris. It is known"
+            },
+            {
+                step: 6,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It", "is", "known", "for"],
+                outputToken: "the",
+                predictingPos: "T₁₂",
+                explanation: "Context now has 11 tokens. Model predicts token [the].",
+                fullText: "The capital of France is Paris. It is known for"
+            },
+            {
+                step: 7,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It", "is", "known", "for", "the"],
+                outputToken: "Eiffel",
+                predictingPos: "T₁₃",
+                explanation: "Context snowballs to 12 tokens. Model predicts token [Eiffel].",
+                fullText: "The capital of France is Paris. It is known for the"
+            },
+            {
+                step: 8,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It", "is", "known", "for", "the", "Eiffel"],
+                outputToken: "Tower",
+                predictingPos: "T₁₄",
+                explanation: "Context now has 13 tokens. Model predicts token [Tower].",
+                fullText: "The capital of France is Paris. It is known for the Eiffel"
+            },
+            {
+                step: 9,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It", "is", "known", "for", "the", "Eiffel", "Tower"],
+                outputToken: ".",
+                predictingPos: "T₁₅",
+                explanation: "Context has 14 tokens. Model predicts final period [.].",
+                fullText: "The capital of France is Paris. It is known for the Eiffel Tower"
+            },
+            {
+                step: 10,
+                promptTokens: ["The", "capital", "of", "France", "is"],
+                genTokens: ["Paris", ".", "It", "is", "known", "for", "the", "Eiffel", "Tower", "."],
+                outputToken: null,
+                predictingPos: "Done",
+                explanation: "Sentence complete! Every new token recursively joined the input context to generate the next.",
+                fullText: "The capital of France is Paris. It is known for the Eiffel Tower."
+            }
+        ];
+
+        let currentStep = 0;
+
+        // Render progress dots
+        function renderProgressDots() {
+            const container = document.getElementById('step-dots');
+            container.innerHTML = '';
+            steps.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `h-1.5 rounded-full transition-all duration-300 ${
+                    idx === currentStep 
+                        ? 'w-4 bg-indigo-600' 
+                        : idx < currentStep 
+                            ? 'w-1.5 bg-indigo-300' 
+                            : 'w-1.5 bg-slate-200'
+                }`;
+                container.appendChild(dot);
+            });
+        }
+
+        // Main UI Render Function
+        function renderUI() {
+            const state = steps[currentStep];
+
+            // 1. Header & Text Updates
+            document.getElementById('step-badge').innerText = `Step ${state.step} of 10`;
+            document.getElementById('token-count-tag').innerText = `${state.promptTokens.length + state.genTokens.length} tokens`;
+            document.getElementById('pos-tag').innerText = state.outputToken === null ? 'Complete' : `Predicting ${state.predictingPos}`;
+            document.getElementById('step-explanation').innerText = state.explanation;
+            document.getElementById('string-preview').innerText = `"${state.fullText}"`;
+
+            // 2. Render Input Context Tokens
+            const inputContainer = document.getElementById('input-tokens-box');
+            inputContainer.innerHTML = '';
+
+            // Prompt tokens (Blue)
+            state.promptTokens.forEach((tok) => {
+                const chip = document.createElement('span');
+                chip.className = 'px-1.5 py-0.5 bg-blue-100 text-blue-800 border border-blue-200 rounded font-mono text-[10px] font-semibold';
+                chip.innerText = tok;
+                inputContainer.appendChild(chip);
+            });
+
+            // Generated tokens (Amber/Orange)
+            state.genTokens.forEach((tok) => {
+                const chip = document.createElement('span');
+                chip.className = 'px-1.5 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded font-mono text-[10px] font-bold animate-pop';
+                chip.innerText = tok;
+                inputContainer.appendChild(chip);
+            });
+
+            // 3. Render Output Token Box
+            const outputBox = document.getElementById('output-token-box');
+            if (state.outputToken !== null) {
+                outputBox.innerHTML = `
+                    <span class="px-2.5 py-1 bg-amber-200 text-amber-950 border-2 border-amber-400 rounded-lg font-mono font-bold text-xs sm:text-sm shadow-xs animate-pulse-glow flex items-center justify-center min-w-[50px]">
+                        ${escapeHtml(state.outputToken)}
+                    </span>
+                `;
+            } else {
+                outputBox.innerHTML = `
+                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-300 rounded text-xs font-semibold">
+                        Complete
+                    </span>
+                `;
+            }
+
+            // 4. LLM Processor Visual Feedback
+            document.getElementById('nn-status').innerText = `Pass ${state.step + 1}`;
+            const nnNode = document.getElementById('llm-node');
+            const nnGlow = document.getElementById('nn-glow');
+
+            if (state.step > 0 && state.step < 10) {
+                nnGlow.classList.remove('opacity-0');
+                nnNode.classList.add('border-indigo-500');
+            } else {
+                nnGlow.classList.add('opacity-0');
+                nnNode.classList.remove('border-indigo-500');
+            }
+
+            // 5. Button Disabled States
+            document.getElementById('btn-prev').disabled = (currentStep === 0);
+            document.getElementById('btn-next').disabled = (currentStep === steps.length - 1);
+
+            renderProgressDots();
+        }
+
+        // Navigation functions
+        function goToNext() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderUI();
+            }
+        }
+
+        function goToPrev() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderUI();
+            }
+        }
+
+        function resetVisualization() {
+            currentStep = 0;
+            renderUI();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Initialize on page load
+        window.onload = renderUI;
+    </script>
+</body>
+</html>
