@@ -17,7 +17,7 @@ I'll use one example throughout. The prompt is **The quick brown fox** (four tok
 
 A language model writes one token at a time. At each step it reads all the text so far, predicts the next token, appends it, and repeats. This is called autoregressive generation: the model's own output becomes part of its next input.
 
-{{< simulation title="Autoregressive Generation" height="375px" >}}
+{{< simulation title="Autoregressive Generation">}}
 <svg viewBox="0 0 760 356" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block; font-family: ui-sans-serif, system-ui, sans-serif;">
 <defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker></defs>
 <rect width="760" height="356" rx="10" fill="none"/>
@@ -104,7 +104,7 @@ The prompt tokens are all known up front, so nothing forces the model to read th
 
 Suppose the model has 4 layers. Within a layer, all 4 tokens are processed side by side. The layers themselves still run in order, because layer 2 needs the output of layer 1.
 
-{{< simulation title="Prefill: tokens run in parallel inside each layer, layers run in sequence" height="420px" >}}
+{{< simulation title="Prefill: tokens run in parallel inside each layer, layers run in sequence">}}
 <svg viewBox="0 0 760 402" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block; font-family: ui-sans-serif, system-ui, sans-serif;">
 <defs><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker></defs>
 <rect width="760" height="402" rx="10" fill="none"/>
@@ -163,7 +163,7 @@ After prefill, the model predicts one token at a time, and each token depends on
 
 Step through the example below. The first step is prefill, and the next four are decode steps.
 
-{{< simulation title="Prefill, then decode: what goes through the model at each step" height="330px" >}}
+{{< simulation title="Prefill, then decode: what goes through the model at each step">}}
 <div id="pd-widget" style="background:transparent;color:#1e293b;border-radius:10px;padding:16px;font-family:ui-sans-serif,system-ui,sans-serif;">
 <style>
 #pd-widget .pd-seq{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
@@ -259,7 +259,7 @@ The work per step is roughly constant: one token through the model, plus attenti
 
 Here is a whole request on a time axis. It shows one long prefill step followed by many short decode steps.
 
-{{< simulation title="Wall-clock view of one request: one long prefill step, then many short decode steps" height="260px" >}}
+{{< simulation title="Wall-clock view of one request: one long prefill step, then many short decode steps">}}
 <svg viewBox="0 0 760 240" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block; font-family: ui-sans-serif, system-ui, sans-serif;">
 <defs><marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker></defs>
 <rect width="760" height="240" rx="10" fill="none"/>
@@ -303,7 +303,7 @@ In this diagram:
 
 ## Side by side
 
-{{< simulation title="Prefill vs decode: same model, different shape of work" height="355px" >}}
+{{< simulation title="Prefill vs decode: same model, different shape of work">}}
 <svg viewBox="0 0 760 336" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block; font-family: ui-sans-serif, system-ui, sans-serif;">
 <defs><marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker></defs>
 <rect width="760" height="336" rx="10" fill="none"/>
