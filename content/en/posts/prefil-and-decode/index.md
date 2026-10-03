@@ -88,9 +88,14 @@ The first row is the prompt going in. The model predicts `jumps`. In the second 
 In probability terms, the reply is written as a chain, and each link conditions on everything before it:
 
 $$
-P(\text{jumps, over, the, lazy, dog} \mid \text{prompt}) = P(\text{jumps} \mid \text{prompt}) \cdot P(\text{over} \mid \text{prompt, jumps}) \cdot P(\text{the} \mid \text{prompt, jumps, over}) \cdots
+\begin{aligned}
+P(\text{jumps, over, the, lazy, dog} \mid \text{prompt})
+&= P(\text{jumps} \mid \text{prompt}) \\
+&\times P(\text{over} \mid \text{prompt, jumps}) \\
+&\times P(\text{the} \mid \text{prompt, jumps, over}) \\
+&\times \cdots
+\end{aligned}
 $$
-
 Each factor is a full probability distribution over the model's vocabulary. After `The quick brown`, the model puts most of its probability on words that fit the idiom. A token depends only on the tokens before it, never on tokens after it. That one-directional rule is what makes the rest of this post work.
 
 Taken literally, the diagram describes a wasteful process. Row 5 feeds eight tokens through the model, and seven of them were already processed in row 4. The fix is to remember the intermediate results of the old tokens in a **KV cache**, which stores two vectors per token per layer, a key and a value, that later tokens read when they attend. With a cache, the model has two distinct jobs:
